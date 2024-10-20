@@ -7,8 +7,8 @@
 class Block {
     friend class Floor;
 private:
-    int blockNumber;
-    int residentCount;
+    int blockNumber = 0;
+    int residentCount = 0;
     std::vector<StudentResident> residents;
 public:
     Block();

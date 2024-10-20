@@ -1,6 +1,6 @@
 #include "Block.h"
 
-Block::Block() : blockNumber(0), residentCount(0), residents() {}
+Block::Block() {}
 
 void Block::addResident(const StudentResident& person) {
     residents.push_back(person);
@@ -11,8 +11,9 @@ void Block::addResident(const StudentResident& person) {
 void Block::printBlockResidents() {
     std::cout << "Блок №" << blockNumber << ":" << std::endl;
     if (residentCount > 0) {
-        for (int i = 0; i < residents.size(); i++)
-            residents[i].printInfo(1);
+        for (const auto& resident : residents) {
+            resident.printInfo(1);
+        }
     }
 }
 
