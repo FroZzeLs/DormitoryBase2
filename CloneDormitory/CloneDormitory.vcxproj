@@ -146,6 +146,7 @@
     <ClCompile Include="StudentList.cpp" />
     <ClCompile Include="StudentManager.cpp" />
     <ClCompile Include="StudentResident.cpp" />
+    <ClCompile Include="StudentSearchException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrowsUsage.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="StudentList.h" />
     <ClInclude Include="StudentManager.h" />
     <ClInclude Include="StudentResident.h" />
+    <ClInclude Include="StudentSearchException.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -2,6 +2,7 @@
 #include "ArrowsUsage.h"
 #include "StudentManager.h"
 #include "Database.h"
+#include "StudentSearchException.h"
 
 struct StudentPlace {
 	int floor;

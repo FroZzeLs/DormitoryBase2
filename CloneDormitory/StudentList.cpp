@@ -6,7 +6,7 @@ bool checkForOriginality(std::vector<Floor>& floors, const StudentResident& newS
             continue;
 
         for (auto& block : floor.getBlocks()) {
-            auto& residents = block.getResidents();
+            const auto& residents = block.getResidents();
             if (residents.empty())
                 continue;
 
@@ -73,9 +73,9 @@ void printAllStudents(std::vector<Floor>& floors) {
     system("cls");
 }
 
-bool doesStudentMatch(const StudentResident& student, const std::string& surname,
-    const std::string& name, const std::string& patronym,
-    const std::string& phoneNumber) {
+bool doesStudentMatch(const StudentResident& student, std::string_view surname,
+    std::string_view name, std::string_view patronym,
+    std::string_view phoneNumber) {
     return (surname.empty() || student.getSurname() == surname) &&
         (name.empty() || student.getName() == name) &&
         (patronym.empty() || student.getPatronym() == patronym) &&
@@ -98,7 +98,10 @@ std::vector<StudentPlace> findStudentInBlock(const std::vector<StudentResident>&
 }
 
 StudentPlace searchStudent(std::vector<Floor>& floors) {
-    std::string surname = "", name = "", patronym = "", phoneNumber = "";
+    std::string surname = "";
+    std::string name = "";
+    std::string patronym = "";
+    std::string phoneNumber = "";
 
     std::cout << "Введите фамилию (или нажмите Enter, чтобы пропустить): ";
     std::getline(std::cin, surname);
@@ -130,7 +133,7 @@ StudentPlace searchStudent(std::vector<Floor>& floors) {
 
     if (foundPlaces.empty()) {
         std::cout << "Студенты с заданными параметрами не найдены.\n";
-        throw std::runtime_error("No students found");
+        throw StudentSearchException("No students found with the provided parameters.");
     }
 
     if (foundPlaces.size() == 1) {
@@ -154,7 +157,7 @@ StudentPlace searchStudent(std::vector<Floor>& floors) {
 
     if (choice <= 0 || choice > foundPlaces.size()) {
         std::cout << "Неверный выбор.\n";
-        throw std::runtime_error("Invalid choice");
+        throw StudentSearchException("No students found with the provided parameters.");
     }
 
     return foundPlaces[choice - 1];
@@ -191,37 +194,43 @@ void deleteStudent(const StudentPlace& place, std::vector<Floor>& floors, Databa
 }
 
 void removeAllStudents(std::vector<Floor>& floors, Database& dtb) {
-    for (int i = 0; i < floors.size(); i++) {
-        for (int j = 0; j < floors[i].getBlocks().size(); j++)
-            floors[i].getBlocks()[j].getResidents().clear();
-        floors[i].getBlocks().clear();
+    for (auto& floor : floors) {
+        for (auto& block : floor.getBlocks()) {
+            block.getResidents().clear();
+        }
+        floor.getBlocks().clear();
     }
+
     std::vector<Floor> newFloors(16);
-    floors = newFloors;
+    floors = std::move(newFloors);
     dtb.clearDatabase();
     std::cout << "Все студенты удалены!" << std::endl;
 }
 
-void printDebtorList(std::vector<Floor> floors) {
+void printDebtorList(std::vector<Floor>& floors) {
     std::vector<StudentResident> debtors;
-    for (int i = 0; i < floors.size(); i++) {
-        if (floors[i].getBlocks().empty())
-            continue;
-        for (int j = 0; j < floors[i].getBlocks().size(); j++) {
-            if (floors[i].getBlocks()[j].getResidents().empty())
-                continue;
-            for (int k = 0; k < floors[i].getBlocks()[j].getResidents().size(); k++) {
-                if (floors[i].getBlocks()[j].getResidents()[k].getDebtor())
-                    debtors.push_back(floors[i].getBlocks()[j].getResidents()[k]);
+
+    for (auto& floor : floors) {
+        if (floor.getBlocks().empty()) continue; 
+
+        for (auto& block : floor.getBlocks()) {
+            if (block.getResidents().empty()) continue;
+
+            for (const auto& resident : block.getResidents()) {
+                if (resident.getDebtor()) {
+                    debtors.push_back(resident);
+                }
             }
         }
     }
+
     if (debtors.empty()) {
         std::cout << "Должников нет!" << std::endl;
         return;
     }
+
     std::cout << "Должники ОПТ:" << std::endl;
-    for (int i = 0; i < debtors.size(); i++) {
-        debtors[i].printInfo(2);
+    for (const auto& debtor : debtors) {
+        debtor.printInfo(2);
     }
 }
