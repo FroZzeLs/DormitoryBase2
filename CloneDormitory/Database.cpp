@@ -53,15 +53,15 @@ void Database::createTables() {
         )";
 
     char* errMsg = nullptr;
-    if (sqlite3_exec(db, createFloorsTable, 0, 0, &errMsg) != SQLITE_OK) {
+    if (sqlite3_exec(db, createFloorsTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::cerr << "Ошибка создания таблицы Floors: " << errMsg << std::endl;
         sqlite3_free(errMsg);
     }
-    if (sqlite3_exec(db, createBlocksTable, 0, 0, &errMsg) != SQLITE_OK) {
+    if (sqlite3_exec(db, createBlocksTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::cerr << "Ошибка создания таблицы Blocks: " << errMsg << std::endl;
         sqlite3_free(errMsg);
     }
-    if (sqlite3_exec(db, createStudentsTable, 0, 0, &errMsg) != SQLITE_OK) {
+    if (sqlite3_exec(db, createStudentsTable, nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::cerr << "Ошибка создания таблицы Students: " << errMsg << std::endl;
         sqlite3_free(errMsg);
     }
@@ -71,7 +71,7 @@ void Database::clearDatabase() {
     const char* clearDataSQL = "DELETE FROM Floors; DELETE FROM Blocks; DELETE FROM Students;";
 
     char* errMsg = nullptr;
-    if (sqlite3_exec(db, clearDataSQL, 0, 0, &errMsg) != SQLITE_OK) {
+    if (sqlite3_exec(db, clearDataSQL, nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::cerr << "Ошибка очистки БД: " << errMsg << std::endl;
         sqlite3_free(errMsg);
     }
@@ -80,11 +80,9 @@ void Database::clearDatabase() {
 void Database::loadFromDatabase(std::vector<Floor>& floors) {
     sqlite3_stmt* stmt = nullptr;
 
-    const char* selectFloorsSQL = R"(
+    if (const char* selectFloorsSQL = R"(
         SELECT floorNumber, mentor FROM Floors;
-    )";
-
-    if (sqlite3_prepare_v2(db, selectFloorsSQL, -1, &stmt, 0) != SQLITE_OK) {
+    )"; sqlite3_prepare_v2(db, selectFloorsSQL, -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Ошибка подготовки запроса Floors: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
@@ -107,7 +105,7 @@ void Database::loadFromDatabase(std::vector<Floor>& floors) {
         )";
 
         sqlite3_stmt* blockStmt = nullptr;
-        if (sqlite3_prepare_v2(db, selectBlocksSQL, -1, &blockStmt, 0) != SQLITE_OK) {
+        if (sqlite3_prepare_v2(db, selectBlocksSQL, -1, &blockStmt, nullptr) != SQLITE_OK) {
             std::cerr << "Ошибка подготовки запроса Blocks: " << sqlite3_errmsg(db) << std::endl;
             sqlite3_finalize(stmt);
             return;
@@ -148,11 +146,11 @@ void Database::loadFromDatabase(std::vector<Floor>& floors) {
                 std::string patronym = reinterpret_cast<const char*>(sqlite3_column_text(studentStmt, 2));
                 std::string phoneNumber = reinterpret_cast<const char*>(sqlite3_column_text(studentStmt, 3));
                 int age = sqlite3_column_int(studentStmt, 4);
-                int blockNumber = sqlite3_column_int(studentStmt, 5);
+                int storedBlockNumber = sqlite3_column_int(studentStmt, 5);
                 int studActive = sqlite3_column_int(studentStmt, 6);
                 int opt = sqlite3_column_int(studentStmt, 7);
 
-                StudentResident buffer(surname, name, patronym, age, phoneNumber, blockNumber, studActive, opt);
+                StudentResident buffer(surname, name, patronym, age, phoneNumber, storedBlockNumber, studActive, opt);
                 floors[floorIndex].blocks[blockIndex].addResident(buffer);
             }
             sqlite3_finalize(studentStmt);
@@ -170,7 +168,7 @@ void Database::addStudentToDb(const StudentResident& student) {
 
     sqlite3_stmt* stmt;
 
-    if (sqlite3_prepare_v2(db, insertStudentSQL, -1, &stmt, 0) != SQLITE_OK) {
+    if (sqlite3_prepare_v2(db, insertStudentSQL, -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Ошибка подготовки запроса: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
@@ -196,7 +194,7 @@ void Database::addStudentToDb(const StudentResident& student) {
            UPDATE Blocks SET  residentCount = residentCount + 1 WHERE blockNumber = ?;
         )";
 
-    if (sqlite3_prepare_v2(db, insertStudentSQL, -1, &stmt, 0) != SQLITE_OK) {
+    if (sqlite3_prepare_v2(db, insertStudentSQL, -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Ошибка подготовки запроса: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
@@ -220,7 +218,7 @@ void Database::deleteStudentFromDb(const StudentResident& student) {
         WHERE blockId = ? AND surname = ? AND name = ? AND patronym = ? AND phoneNumber = ?;
     )";
 
-    if (sqlite3_prepare_v2(db, deleteStudentSQL, -1, &stmt, 0) != SQLITE_OK) {
+    if (sqlite3_prepare_v2(db, deleteStudentSQL, -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Ошибка подготовки запроса: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
@@ -243,7 +241,7 @@ void Database::deleteStudentFromDb(const StudentResident& student) {
             SET residentCount = residentCount - 1 WHERE blockNumber = ?;
         )";
 
-    if (sqlite3_prepare_v2(db, deleteStudentSQL, -1, &stmt, 0) != SQLITE_OK) {
+    if (sqlite3_prepare_v2(db, deleteStudentSQL, -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Ошибка подготовки запроса: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
