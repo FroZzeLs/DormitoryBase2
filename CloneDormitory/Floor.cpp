@@ -1,6 +1,6 @@
 #include "Floor.h"
 
-Floor::Floor() : floorNumber(0), mentor(""), blocks(17) {}
+Floor::Floor() : blocks(17) {}
 
 Floor::Floor(int blockCount) : floorNumber(0), mentor("") {
     blocks.resize(blockCount);
@@ -24,20 +24,22 @@ void Floor::setFloorNumber(int floorNumberValue) {
     floorNumber = floorNumberValue;
 }
 
-void Floor::setMentor(const std::string& mentorName) {
+void Floor::setMentor(std::string_view mentorName) {
     mentor = mentorName;
 }
 
-void Floor::printBlocksInfo(){
+void Floor::printBlocksInfo() {
     bool firstPrint = true;
-    for (int i = 0; i < blocks.size(); i++) {
-        if (blocks[i].getResidents().empty())
+
+    for (auto& block : blocks) { // Использование диапазонного цикла for
+        if (block.getResidents().empty())
             continue;
+
         if (firstPrint) {
             std::cout << "Воспитатель " << floorNumber << " этажа: " << mentor << std::endl;
             firstPrint = false;
         }
-        blocks[i].printBlockResidents();
+        block.printBlockResidents();
         std::cout << std::endl;
     }
 }

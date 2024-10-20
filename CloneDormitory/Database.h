@@ -23,4 +23,5 @@ public:
     void createTables();
     void loadFromDatabase(std::vector<Floor>& floors);
     void clearDatabase();
+    Database& operator=(const Database& other);
 };

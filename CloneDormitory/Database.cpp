@@ -265,3 +265,17 @@ void Database::deleteStudentFromDb(const StudentResident& student) {
     sqlite3_finalize(stmt);
 
 }
+
+Database& Database::operator=(const Database& other) {
+    if (this != &other) {
+        if (db) {
+            sqlite3_close(db);
+        }
+
+        dbName = other.dbName;
+        if (sqlite3_open(dbName.c_str(), &db) != SQLITE_OK) {
+            throw DatabaseException("Не удалось открыть базу данных в операторе копирования");
+        }
+    }
+    return *this;
+}
