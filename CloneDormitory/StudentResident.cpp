@@ -53,7 +53,7 @@ void StudentResident::inputInfo() {
 }
 
 void StudentResident::printInfo(int mode) const {
-    std::cout << "ФИО: " << surname << " " << name << " " << patronym << std::endl;
+    std::cout << "\nФИО: " << surname << " " << name << " " << patronym << std::endl;
     if (mode == 2)
         std::cout << "Номер блока: " << blockNumber << std::endl;
     std::cout << "Возраст: " << age << std::endl;

@@ -16,9 +16,9 @@ void addStudent(std::vector<Floor>& floors, const StudentResident& newStudent, D
 
 void printAllStudents(std::vector<Floor>& floors);
 
-bool doesStudentMatch(const StudentResident& student, const std::string& surname,
-	const std::string& name, const std::string& patronym,
-	const std::string& phoneNumber);
+bool doesStudentMatch(const StudentResident& student, std::string_view surname,
+	std::string_view name, std::string_view patronym,
+	std::string_view phoneNumber);
 
 std::vector<StudentPlace> findStudentInBlock(const std::vector<StudentResident>& residents,
 	const std::string& surname, const std::string& name,
@@ -35,4 +35,4 @@ void updateStudentInfo(const StudentPlace& Place, std::vector<Floor>& floors, Da
 
 void removeAllStudents(std::vector<Floor>& floors, Database& dtb);
 
-void printDebtorList(std::vector<Floor> floors);
+void printDebtorList(std::vector<Floor>& floors);

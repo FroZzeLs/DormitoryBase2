@@ -7,7 +7,7 @@ void Block::addResident(const StudentResident& person) {
 }
 
 void Block::printBlockResidents() const {
-    std::cout << "Áëîê ¹" << blockNumber << ":" << std::endl;
+    std::cout << "\nÁëîê ¹" << blockNumber << ":" << std::endl;
     if (residentCount > 0) {
         for (const auto& resident : residents) {
             resident.printInfo(1);

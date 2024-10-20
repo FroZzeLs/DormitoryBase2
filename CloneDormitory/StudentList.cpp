@@ -118,6 +118,8 @@ StudentPlace searchStudent(std::vector<Floor>& floors) {
     std::string input;
 
     std::vector<StudentPlace> foundPlaces;
+    StudentPlace noStudent;
+    noStudent.floor = -1;
 
     for (int i = 0; i < floors.size(); ++i) {
         if (floors[i].getBlocks().empty()) continue;
@@ -133,7 +135,7 @@ StudentPlace searchStudent(std::vector<Floor>& floors) {
 
     if (foundPlaces.empty()) {
         std::cout << "Студенты с заданными параметрами не найдены.\n";
-        throw StudentSearchException("No students found with the provided parameters.");
+        return noStudent;
     }
 
     if (foundPlaces.size() == 1) {
@@ -155,11 +157,6 @@ StudentPlace searchStudent(std::vector<Floor>& floors) {
     int choice;
     choice = inputInteger(); 
 
-    if (choice <= 0 || choice > foundPlaces.size()) {
-        std::cout << "Неверный выбор.\n";
-        throw StudentSearchException("No students found with the provided parameters.");
-    }
-
     return foundPlaces[choice - 1];
 }
 
@@ -174,8 +171,9 @@ void updateStudentInfo(const StudentPlace& place, std::vector<Floor>& floors, Da
         return;
     }
 
-    std::cout << "Изменение информации о студенте:" << std::endl;
     auto& updatedStudent = floors[place.floor].getBlocks()[place.block].getResidents()[place.number];
+    std::cout << "\nИзменение информации о студенте '" << updatedStudent.getSurname() << " " 
+        << updatedStudent.getName() << " " << updatedStudent.getPatronym() << "':" << std::endl;
     StudentResident oldInfo(updatedStudent.getSurname(), updatedStudent.getName(), updatedStudent.getPatronym(), updatedStudent.getAge(), 
         updatedStudent.getPhoneNumber(), updatedStudent.getBlockNumber(), updatedStudent.getStudActive(), updatedStudent.getOpt());
     updatedStudent.inputInfo();

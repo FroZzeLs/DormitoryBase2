@@ -3,7 +3,6 @@
 int getOrAddBlock(sqlite3* db, int blockNumber) {
     sqlite3_stmt* stmt;
 
-    // Prepare and execute the SELECT statement.
     if (const char* selectBlockSQL = R"(
             SELECT id FROM Blocks WHERE blockNumber = ?;
         )"; sqlite3_prepare_v2(db, selectBlockSQL, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -20,7 +19,6 @@ int getOrAddBlock(sqlite3* db, int blockNumber) {
     }
     sqlite3_finalize(stmt);
 
-    // Prepare and execute the INSERT statement.
     if (const char* insertBlockSQL = R"(
             INSERT OR IGNORE INTO Blocks (blockNumber, floorId, residentCount)
             VALUES (?, ?, 0);

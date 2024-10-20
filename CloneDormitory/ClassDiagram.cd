@@ -1,53 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Person">
-    <Position X="6" Y="1.75" Width="1.5" />
+  <Class Name="Block" Collapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAEAAEQAAAAAGAAAgAAAAEAAAAQAAABAABgAAAAAAA=</HashCode>
+      <FileName>Block.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Database" Collapsed="true">
+    <Position X="7" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAADUAQAAEBgAAAAAAAAAAAAAAABAAkAAIAAAA=</HashCode>
+      <FileName>Database.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Floor" Collapsed="true">
+    <Position X="8.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIgAEQAAIAAAoAAAAAAAAAAAAAAAAAAAAABAAABQQ=</HashCode>
+      <FileName>Floor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Person" Collapsed="true">
+    <Position X="7.25" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAAAAQAAQAAAEAAAAAEAEAAAAAABAAAAAAAA=</HashCode>
       <FileName>Person.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Resident">
-    <Position X="9" Y="1.75" Width="1.5" />
+  <Class Name="Resident" Collapsed="true">
+    <Position X="9.25" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IQAAAAAAAAAAAAAAAQgAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
       <FileName>Resident.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StudentResident">
-    <Position X="6" Y="4.5" Width="1.5" />
+  <Class Name="StudentResident" Collapsed="true">
+    <Position X="8.25" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="Resident">
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="-1.826" Y="-3.754" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAEAAEAAAAFAQiQAAkgBEQAAAAAAEABkEABEAAQAABA=</HashCode>
       <FileName>StudentResident.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Block">
-    <Position X="11.5" Y="1.75" Width="1.5" />
+  <Class Name="DatabaseException" Collapsed="true">
+    <Position X="7" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAAEQAAAAAEAAAAAAAAEAAAAQAAAAAABgAAAAAAA=</HashCode>
-      <FileName>Block.h</FileName>
+      <HashCode>AAAAAAAAAACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>DatabaseException.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Floor">
-    <Position X="11.5" Y="4.5" Width="1.5" />
+  <Class Name="StudentSearchException" Collapsed="true">
+    <Position X="8.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAAAAoSAAAAAAAAAAAAAAAAAAAAJAAABAQ=</HashCode>
-      <FileName>Floor.h</FileName>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StudentSearchException.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Database">
-    <Position X="13.25" Y="1.75" Width="1.5" />
+  <Struct Name="StudentPlace" Collapsed="true">
+    <Position X="8.75" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAACUAQAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Database.h</FileName>
+      <HashCode>AAAAAAAAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>StudentList.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="StudentManager">
-    <Position X="13.25" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAASCAAA=</HashCode>
-      <FileName>StudentManager.h</FileName>
-    </TypeIdentifier>
-  </Class>
+  </Struct>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
