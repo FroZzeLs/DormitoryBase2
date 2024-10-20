@@ -1,21 +1,30 @@
 #include "StudentList.h"
 
-bool checkForOriginality(std::vector<Floor>& floors, const StudentResident& newStudent) {
+bool checkForOriginality(std::vector<Floor>&floors, const StudentResident & newStudent) {
     for (auto& floor : floors) {
-        if (floor.getBlocks().empty())
+        if (floor.getBlocks().empty()) {
             continue;
+        }
 
+        bool foundDuplicate = false;
         for (auto& block : floor.getBlocks()) {
             const auto& residents = block.getResidents();
-            if (residents.empty())
-                continue;
 
-            for (const auto& resident : residents) {
-                if (resident == newStudent)
-                    return false;
+            if (!residents.empty()) {
+                for (const auto& resident : residents) {
+                    if (resident == newStudent) {
+                        foundDuplicate = true; 
+                        break;
+                    }
+                }
+            }
+
+            if (foundDuplicate) {
+                return false;
             }
         }
     }
+
     return true;
 }
 
