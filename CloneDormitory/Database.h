@@ -4,15 +4,19 @@
 #include "FloorManager.h"
 #include "BlockManager.h"
 #include "Floor.h"
+#include "DatabaseException.h"
 
 class Database {
 private:
     sqlite3* db;
+    std::string dbName;
 
 public:
-    Database(const std::string& dbName); 
+    explicit Database(const std::string& dbName);
+    Database(const Database& other);
     ~Database();
 
+    std::string getDbName() const;
     void deleteStudentFromDb(const StudentResident& student);
     void addStudentToDb(const StudentResident& student);
     sqlite3*& getDb();

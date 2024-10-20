@@ -1,9 +1,15 @@
 #include "Database.h"
 
-Database::Database(const std::string& dbName) {
+Database::Database(const std::string& dbName) : dbName(dbName) {
     if (sqlite3_open(dbName.c_str(), &db)) {
         std::cerr << "Ошибка открытия БД: " << sqlite3_errmsg(db) << std::endl;
         db = nullptr;
+    }
+}
+
+Database::Database(const Database& other) {
+    if (sqlite3_open(other.getDbName().c_str(), &db) != SQLITE_OK) {
+        throw DatabaseException("Не удалось открыть базу данных в конструкторе копирования");
     }
 }
 
@@ -11,6 +17,10 @@ Database::~Database() {
     if (db) {
         sqlite3_close(db);
     }
+}
+
+std::string Database::getDbName() const {
+    return dbName;
 }
 
 sqlite3*& Database::getDb() {
@@ -131,7 +141,7 @@ void Database::loadFromDatabase(std::vector<Floor>& floors) {
             )";
 
             sqlite3_stmt* studentStmt = nullptr;
-            if (sqlite3_prepare_v2(db, selectStudentsSQL, -1, &studentStmt, 0) != SQLITE_OK) {
+            if (sqlite3_prepare_v2(db, selectStudentsSQL, -1, &studentStmt, nullptr) != SQLITE_OK) {
                 std::cerr << "Ошибка подготовки запроса Students: " << sqlite3_errmsg(db) << std::endl;
                 sqlite3_finalize(blockStmt);
                 sqlite3_finalize(stmt);

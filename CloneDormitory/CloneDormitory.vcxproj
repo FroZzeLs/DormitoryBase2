@@ -135,6 +135,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockManager.cpp" />
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="DatabaseException.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="FloorManager.cpp" />
     <ClCompile Include="Logic.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockManager.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="DatabaseException.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="FloorManager.h" />
     <ClInclude Include="Logic.h" />
