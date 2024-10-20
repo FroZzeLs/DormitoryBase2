@@ -1,17 +1,17 @@
 #include "StudentList.h"
 
-bool checkForOriginality(std::vector<Floor> floors, const StudentResident& newStudent) {
-    for (int i = 0; i < floors.size(); i++) {
-        if (floors[i].blocks.empty())
+bool checkForOriginality(std::vector<Floor>& floors, const StudentResident& newStudent) {
+    for (auto& floor : floors) {
+        if (floor.getBlocks().empty())
             continue;
 
-        for (int j = 0; j < floors[i].blocks.size(); j++) {
-            auto residents = floors[i].blocks[j].getResidents();
+        for (auto& block : floor.getBlocks()) {
+            auto& residents = block.getResidents();
             if (residents.empty())
                 continue;
 
-            for (int k = 0; k < residents.size(); k++) {
-                if (residents[k] == newStudent)
+            for (const auto& resident : residents) {
+                if (resident == newStudent)
                     return false;
             }
         }
@@ -73,9 +73,32 @@ void printAllStudents(std::vector<Floor>& floors) {
     system("cls");
 }
 
+bool doesStudentMatch(const StudentResident& student, const std::string& surname,
+    const std::string& name, const std::string& patronym,
+    const std::string& phoneNumber) {
+    return (surname.empty() || student.getSurname() == surname) &&
+        (name.empty() || student.getName() == name) &&
+        (patronym.empty() || student.getPatronym() == patronym) &&
+        (phoneNumber.empty() || student.getPhoneNumber() == phoneNumber);
+}
+
+std::vector<StudentPlace> findStudentInBlock(const std::vector<StudentResident>& residents,
+    const std::string& surname, const std::string& name,
+    const std::string& patronym, const std::string& phoneNumber,
+    int floorIndex, int blockIndex) {
+    std::vector<StudentPlace> foundPlaces;
+
+    for (int k = 0; k < residents.size(); k++) {
+        if (doesStudentMatch(residents[k], surname, name, patronym, phoneNumber)) {
+            StudentPlace place = { floorIndex, blockIndex, k };
+            foundPlaces.push_back(place);
+        }
+    }
+    return foundPlaces;
+}
+
 StudentPlace searchStudent(std::vector<Floor>& floors) {
-    std::string surname, name, patronym, phoneNumber;
-    int blockNumber = -1, floorNumber = -1;
+    std::string surname = "", name = "", patronym = "", phoneNumber = "";
 
     std::cout << "Введите фамилию (или нажмите Enter, чтобы пропустить): ";
     std::getline(std::cin, surname);
@@ -90,75 +113,51 @@ StudentPlace searchStudent(std::vector<Floor>& floors) {
     std::getline(std::cin, phoneNumber);
 
     std::string input;
-    std::cout << "Введите номер блока (или нажмите Enter, чтобы пропустить): ";
-    std::getline(std::cin, input);
-    if (!input.empty()) blockNumber = std::stoi(input);
 
-    std::cout << "Введите номер этажа (или нажмите Enter, чтобы пропустить): ";
-    std::getline(std::cin, input);
-    if (!input.empty()) floorNumber = std::stoi(input);
-
-    std::vector<StudentResident> foundStudents;
     std::vector<StudentPlace> foundPlaces;
 
     for (int i = 0; i < floors.size(); ++i) {
-        if (floors[i].getBlocks().empty())
-            continue;
+        if (floors[i].getBlocks().empty()) continue;
+
         for (int j = 0; j < floors[i].getBlocks().size(); ++j) {
-            if (floors[i].getBlocks()[j].getResidents().empty())
-                continue;
-            std::vector<StudentResident> residents = floors[i].getBlocks()[j].getResidents();
-            for (int k = 0; k < residents.size(); k++) {
-                bool match = true;
+            const auto& residents = floors[i].getBlocks()[j].getResidents();
+            if (residents.empty()) continue;
 
-                if (!surname.empty() && residents[k].getSurname() != surname) {
-                    match = false;
-                }
-                if (!name.empty() && residents[k].getName() != name) {
-                    match = false;
-                }
-                if (!patronym.empty() && residents[k].getPatronym() != patronym) {
-                    match = false;
-                }
-                if (!phoneNumber.empty() && residents[k].getPhoneNumber() != phoneNumber) {
-                    match = false;
-                }
-
-                if (match) {
-                    foundStudents.push_back(residents[k]);
-                    StudentPlace founded;
-                    founded.floor = i, founded.block = j, founded.number = k;
-                    foundPlaces.push_back(founded);
-                }
-            }
+            auto places = findStudentInBlock(residents, surname, name, patronym, phoneNumber, i, j);
+            foundPlaces.insert(foundPlaces.end(), places.begin(), places.end());
         }
     }
 
-    if (foundStudents.empty()) {
+    if (foundPlaces.empty()) {
         std::cout << "Студенты с заданными параметрами не найдены.\n";
-        StudentPlace noStudent;
-        noStudent.floor = -1, noStudent.block = -1, noStudent.number = -1;
         throw std::runtime_error("No students found");
-        return noStudent;
     }
 
-    if (foundStudents.size() == 1) {
+    if (foundPlaces.size() == 1) {
         return foundPlaces[0];
     }
 
     std::cout << "Найдено несколько студентов:\n";
-    for (int i = 0; i < foundStudents.size(); ++i) {
-        std::cout << i + 1 << ". " << foundStudents[i].getSurname() << " " << foundStudents[i].getName() << " "
-            << foundStudents[i].getPatronym() << ", Блок: " << foundStudents[i].getBlockNumber() << "\n";
+    for (int idx = 0; idx < foundPlaces.size(); ++idx) {
+        const auto& student = floors[foundPlaces[idx].floor].getBlocks()[foundPlaces[idx].block].getResidents()[foundPlaces[idx].number];
+        std::cout << idx + 1 << ". "
+            << student.getSurname() << " "
+            << student.getName() << " "
+            << student.getPatronym() << ", "
+            << "Блок: " << student.getBlockNumber()
+            << "\n";
     }
 
     std::cout << "Выберите студента по номеру: ";
     int choice;
-    choice = inputInteger();
-    return foundPlaces[choice - 1];
+    choice = inputInteger(); 
 
-    std::cout << "Неверный выбор.\n";
-    throw std::runtime_error("Invalid choice");
+    if (choice <= 0 || choice > foundPlaces.size()) {
+        std::cout << "Неверный выбор.\n";
+        throw std::runtime_error("Invalid choice");
+    }
+
+    return foundPlaces[choice - 1];
 }
 
 void printStudentBySnp(std::vector<Floor>& floors, const StudentPlace& place) {

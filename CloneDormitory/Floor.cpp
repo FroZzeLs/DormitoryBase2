@@ -2,7 +2,7 @@
 
 Floor::Floor() : blocks(17) {}
 
-Floor::Floor(int blockCount) : floorNumber(0), mentor("") {
+Floor::Floor(int blockCount) {
     blocks.resize(blockCount);
 }
 

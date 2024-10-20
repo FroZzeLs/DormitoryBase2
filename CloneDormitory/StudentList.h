@@ -9,11 +9,20 @@ struct StudentPlace {
 	int number;
 };
 
-bool checkForOriginality(std::vector<Floor> floors, const StudentResident& newStudent);
+bool checkForOriginality(std::vector<Floor>& floors, const StudentResident& newStudent);
 
 void addStudent(std::vector<Floor>& floors, const StudentResident& newStudent, Database& dtb);
 
 void printAllStudents(std::vector<Floor>& floors);
+
+bool doesStudentMatch(const StudentResident& student, const std::string& surname,
+	const std::string& name, const std::string& patronym,
+	const std::string& phoneNumber);
+
+std::vector<StudentPlace> findStudentInBlock(const std::vector<StudentResident>& residents,
+	const std::string& surname, const std::string& name,
+	const std::string& patronym, const std::string& phoneNumber,
+	int floorIndex, int blockIndex);
 
 StudentPlace searchStudent(std::vector<Floor>& floors);
 

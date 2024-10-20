@@ -3,7 +3,7 @@
 
 class Floor {
     friend class Database;
-    friend bool checkForOriginality(const std::vector<Floor> floors, const StudentResident& newStudent);
+    friend bool checkForOriginality(std::vector<Floor>& floors, const StudentResident& newStudent);
 private:
     int floorNumber = 0;
     std::string mentor = "";

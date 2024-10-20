@@ -2,11 +2,10 @@
 
 int getOrAddFloor(sqlite3* db, int floorNumber) {
     sqlite3_stmt* stmt;
-    const char* selectFloorSQL = R"(
-            SELECT id FROM Floors WHERE floorNumber = ?;
-        )";
 
-    if (sqlite3_prepare_v2(db, selectFloorSQL, -1, &stmt, 0) != SQLITE_OK) {
+    if (sqlite3_prepare_v2(db, R"(
+            SELECT id FROM Floors WHERE floorNumber = ?;
+        )", -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Ошибка подготовки запроса: " << sqlite3_errmsg(db) << std::endl;
         return -1;
     }
@@ -20,12 +19,10 @@ int getOrAddFloor(sqlite3* db, int floorNumber) {
     }
     sqlite3_finalize(stmt);
 
-    const char* insertFloorSQL = R"(
+    if (sqlite3_prepare_v2(db, R"(
             INSERT OR IGNORE INTO Floors (floorNumber, mentor)
             VALUES (?, ?);
-        )";
-
-    if (sqlite3_prepare_v2(db, insertFloorSQL, -1, &stmt, 0) != SQLITE_OK) {
+        )", -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Ошибка подготовки запроса: " << sqlite3_errmsg(db) << std::endl;
         return -1;
     }
