@@ -11,9 +11,9 @@ private:
     int residentCount = 0;
     std::vector<StudentResident> residents;
 public:
-    Block();
+    Block() = default;
 
-    void printBlockResidents();
+    void printBlockResidents() const;
     void addResident(const StudentResident& person);
     void deleteResident(const StudentResident& person);
 
