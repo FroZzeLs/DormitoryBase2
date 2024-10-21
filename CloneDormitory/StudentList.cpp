@@ -155,7 +155,7 @@ StudentPlace searchStudent(std::vector<Floor>& floors) {
 
     std::cout << "Выберите студента по номеру: ";
     int choice;
-    choice = inputInteger(); 
+    choice = inputInteger(1, foundPlaces.size());
 
     return foundPlaces[choice - 1];
 }
@@ -230,5 +230,11 @@ void printDebtorList(std::vector<Floor>& floors) {
     std::cout << "Должники ОПТ:" << std::endl;
     for (const auto& debtor : debtors) {
         debtor.printInfo(2);
+    }
+}
+
+void sortFloors(std::vector<Floor>& floors) {
+    for (auto& floor : floors) {
+        floor.sortBlocks();
     }
 }

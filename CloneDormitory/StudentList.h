@@ -36,3 +36,5 @@ void updateStudentInfo(const StudentPlace& Place, std::vector<Floor>& floors, Da
 void removeAllStudents(std::vector<Floor>& floors, Database& dtb);
 
 void printDebtorList(std::vector<Floor>& floors);
+
+void sortFloors(std::vector<Floor>& floors);

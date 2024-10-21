@@ -15,11 +15,12 @@ public:
     void addResidentToBlock(int blockIndex, const StudentResident& person);
 
     int getFloorNumber() const;
-    std::string getMentor() const;
     std::vector<Block>& getBlocks();
 
     void setFloorNumber(int floorNumberValue);
     void setMentor(std::string_view Mentor);
 
     void printBlocksInfo();
+
+    void sortBlocks();
 };

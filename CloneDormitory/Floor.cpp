@@ -43,3 +43,9 @@ void Floor::printBlocksInfo() {
         std::cout << std::endl;
     }
 }
+
+void Floor::sortBlocks() {
+    std::sort(blocks.begin(), blocks.end(), [](const Block& a, const Block& b) {
+        return a.getBlockNumber() < b.getBlockNumber();
+        });
+}

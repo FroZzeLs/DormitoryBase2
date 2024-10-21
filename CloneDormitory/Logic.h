@@ -5,4 +5,4 @@
 
 int normOfOpt();
 
-int inputInteger();
+int inputInteger(int lower, int higher);

@@ -11,7 +11,7 @@ void StudentResident::inputPersonInfo() {
     std::getline(std::cin, patronym);
 
     std::cout << "Введите возраст: ";
-    age = inputInteger();
+    age = inputInteger(0, 200);
 
     std::cout << "Введите номер телефона: ";
     std::getline(std::cin, phoneNumber);
@@ -19,17 +19,17 @@ void StudentResident::inputPersonInfo() {
 
 void StudentResident::inputResidentInfo() {
     std::cout << "Введите номер блока: ";
-    blockNumber = inputInteger();
+    blockNumber = inputInteger(101, 1617);
 
     std::cout << "Введите статус студента (0 - не активист, 1 - член студсовета, 2 - ДД): ";
-    studActive = inputInteger();
+    studActive = inputInteger(0, 2);
 
     if (studActive != 0) {
         opt = 36;
     }
     else {
         std::cout << "Введите количество отработанных часов ОПТ: ";
-        opt = inputInteger();
+        opt = inputInteger(0, 1000);
     }
 
     if (opt < normOfOpt()) {

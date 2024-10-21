@@ -8,14 +8,16 @@ int main() {
     Database dtb("Dormitory.db");
     dtb.createTables();
     dtb.loadFromDatabase(floors);
+    sortFloors(floors);
 
     while (choice != 0) {
         std::cout << "Выберите действие:\n1 - Добавить студента в БД\n2 - Вывести информацию по всем студентам\n3 - Найти информацию по одному студенту\n4 - Изменить данные студента\n5 - Удалить студента\n6 - Удалить всех студентов\n7 - Вывести должников\n0 - завершить программу" << std::endl;
-        choice = inputInteger();
+        choice = inputInteger(0, 7);
 
         switch (choice) {
         case 1: {
             addNewStudents(floors, dtb);
+            sortFloors(floors);
             break;
         }
 
@@ -32,6 +34,7 @@ int main() {
 
         case 4: {
             updateStudentInfo(searchStudent(floors), floors, dtb);
+            sortFloors(floors);
             break;
         }
 
