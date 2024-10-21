@@ -234,10 +234,10 @@ void Database::deleteStudentFromDb(const StudentResident& student) {
     }
 
     sqlite3_bind_int(stmt, 1, getOrAddBlock(db, student.getBlockNumber()));
-    sqlite3_bind_text(stmt, 2, student.getSurname().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, student.getName().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, student.getPatronym().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 5, student.getPhoneNumber().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, student.getSurname().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, student.getName().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, student.getPatronym().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 5, student.getPhoneNumber().c_str(), -1, SQLITE_TRANSIENT);
 
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         std::cerr << "Ошибка выполнения запроса: " << sqlite3_errmsg(db) << std::endl;

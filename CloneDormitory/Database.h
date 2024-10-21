@@ -1,5 +1,6 @@
 #pragma once
 #include <sqlite3.h>
+#include <format>
 #include "StudentResident.h"
 #include "FloorManager.h"
 #include "BlockManager.h"
